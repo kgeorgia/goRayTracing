@@ -1,18 +1,18 @@
 package shapes
 
 import (
+	. "goRayTracing/types/color"
+	. "goRayTracing/types/vector"
 	"math"
-	color "goRayTracing/types/color"
-	vector "goRayTracing/types/vector"
 )
 
 type Sphere struct {
-	Position vector.Vector
-	Color color.Color
+	Position Vector
+	Color    Color
 	Diameter float64
 }
 
-func (sp Sphere) Intersect(ray, pos vector.Vector) (float64) {
+func (sp Sphere) Intersect(ray, pos Vector) float64 {
 	var a, b, c, x1, x2, disc float64
 	sub := pos.Sub(sp.Position)
 
@@ -21,7 +21,7 @@ func (sp Sphere) Intersect(ray, pos vector.Vector) (float64) {
 	c = sub.Dot(sub) - math.Pow(sp.Diameter / 2, 2)
 
 	disc = math.Pow(b, 2) - (4 * a * c)
-	if (disc < 0) {
+	if disc < 0 {
 		return -1
 	}
 
@@ -39,8 +39,8 @@ func (sp Sphere) Intersect(ray, pos vector.Vector) (float64) {
 	}
 }
 
-func (sp Sphere) GetNormal(surf_point vector.Vector)(vector.Vector) {
-	sub := surf_point.Sub(sp.Position)
+func (sp Sphere) GetNormal(surfPoint Vector) Vector {
+	sub := surfPoint.Sub(sp.Position)
 
 	return sub.Normalize()
 }

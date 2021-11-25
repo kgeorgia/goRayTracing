@@ -6,11 +6,11 @@ type Color struct {
 	R, G, B uint8
 }
 
-func (a Color) Print() {
-	fmt.Println(a.R, a.G, a.B)
+func (x Color) Print() {
+	fmt.Println(x.R, x.G, x.B)
 }
 
-func (x Color) Sum(y Color)(Color) {
+func (x Color) Sum(y Color) Color {
 	var r, g, b uint8
 
 	if int(x.R) + int(y.R) > 255 {
@@ -33,6 +33,6 @@ func (x Color) Sum(y Color)(Color) {
 	return Color{r, g, b}
 }
 
-func (a Color) To_int()(int) {
-	return int(a.R) << 16 | int(a.G) << 8 | int(a.B)
+func (x Color) ToInt() int {
+	return int(x.R) << 16 | int(x.G) << 8 | int(x.B)
 }

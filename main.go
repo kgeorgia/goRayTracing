@@ -15,6 +15,6 @@ func main() {
 	vector.Print()
 	col.Print()
 	col3.Print()
-	fmt.Println(col.To_int())
+	fmt.Println(col.ToInt())
 	fmt.Println("ght")
 }
