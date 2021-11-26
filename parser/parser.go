@@ -11,8 +11,9 @@ func Parser(filename string)([]string, error) {
 	lines, err := ReadFile(filename)
 	if err != nil {
 		fmt.Println("Error: read file!")
-		
 	}
+
+	return lines, err
 }
 
 func ReadFile(filename string)([]string, error) {

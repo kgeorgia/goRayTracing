@@ -2,6 +2,7 @@ package light
 
 import (
 	. "goRayTracing/types/color"
+	. "goRayTracing/types/shapes"
 	. "goRayTracing/types/vector"
 )
 
@@ -25,6 +26,6 @@ func (p PointLight) AddLight(shapeColor Color, surfNorm float64) Color {
 	return Color{R: retR, G: retG, B: retB }
 }
 
-func (p PointLight) IntersectLight() float64 {
+func (p PointLight) IntersectLight(obj Object, surfPoint Vector) float64 {
 	
 }

@@ -12,12 +12,12 @@ type Sphere struct {
 	Diameter float64
 }
 
-func (sp Sphere) Intersect(ray, pos Vector) float64 {
+func (sp Sphere) Intersect(origin, direction Vector) float64 {
 	var a, b, c, x1, x2, disc float64
-	sub := pos.Sub(sp.Position)
+	sub := origin.Sub(sp.Position)
 
-	a = ray.Dot(ray)
-	b = 2 * ray.Dot(sub)
+	a = direction.Dot(direction)
+	b = 2 * direction.Dot(sub)
 	c = sub.Dot(sub) - math.Pow(sp.Diameter / 2, 2)
 
 	disc = math.Pow(b, 2) - (4 * a * c)
