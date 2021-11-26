@@ -26,6 +26,20 @@ func (p PointLight) AddLight(shapeColor Color, surfNorm float64) Color {
 	return Color{R: retR, G: retG, B: retB }
 }
 
-func (p PointLight) IntersectLight(obj Object, surfPoint Vector) float64 {
-	
+func (p PointLight) IntersectLight(objects []Object, currShape Object, surfPoint Vector) (float64, bool) {
+	lengthRay := surfPoint.Sub(p.Position).Length()
+	lightRay := surfPoint.Sub(p.Position).Normalize()
+
+	for _, shape := range objects {
+		if &shape != &currShape {
+			currLength := shape.Intersect(p.Position, lightRay)
+			if currLength != -1 && currLength < lengthRay {
+				return 0.0, false
+			}
+		}
+	}
+
+	shapeNormal := currShape.GetNormal(surfPoint)
+
+	return shapeNormal.Dot(lightRay), true
 }

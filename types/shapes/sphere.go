@@ -44,3 +44,7 @@ func (sp Sphere) GetNormal(surfPoint Vector) Vector {
 
 	return sub.Normalize()
 }
+
+func (sp Sphere) GetColor() Color {
+	return sp.Color
+}

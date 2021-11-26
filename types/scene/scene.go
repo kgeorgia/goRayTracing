@@ -50,22 +50,33 @@ func (scene Scene) Render(countThreads int) [][]int {
 }
 
 func (scene Scene) Trace(cord, color chan Pixel) {
-	var closerShape Object
-	dist := math.MaxFloat64
+	var closestShape Object
+	minDist := math.MaxFloat64
+	var resultColor Color
 
 	for value := range cord {
-		position, direrction := scene.Cameras[0].CastRay(value.X, value.Y, scene.Viewport)
+		position, direction := scene.Cameras[0].CastRay(value.X, value.Y, scene.Viewport)
 
 		for _, shape := range scene.Objects {
-			currDist := shape.Intersect(dir, pos)
+			currDist := shape.Intersect(position, direction)
 
-			if currDist != -1 && currDist < dist {
-				dist = currDist
-				closerShape = shape
+			if currDist != -1 && currDist < minDist {
+				minDist = currDist
+				closestShape = shape
 			}
 		}
 
-
+		if minDist != math.MaxFloat64 {
+			surfPoint := direction.Multi(minDist).Sum(position)
+			for _, light := range scene.Lights {
+				shapeNormal, ok := light.IntersectLight(scene.Objects, closestShape, surfPoint)
+				if ok {
+					resultColor.Sum(light.AddLight(closestShape.GetColor(), shapeNormal))
+				}
+			}
+			value.Value = resultColor
+		}
+		color <- value
 	}
 }
 
