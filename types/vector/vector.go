@@ -1,6 +1,10 @@
 package vector
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+	"strings"
+)
 import "math"
 
 type Vector struct {
@@ -44,4 +48,25 @@ func (a Vector) Cross(b Vector) Vector {
 	y = a.Z * b.X - a.X * b.Z
 	z = a.X * b.Y - a.Y * b.X
 	return Vector{x, y, z}
+}
+
+func (a *Vector) ParseVector(input string) {
+	values := strings.Split(input, ",")
+
+	if len(values) == 3 {
+		x, err := strconv.ParseFloat(values[0], 64)
+		if err == nil {
+			a.X = x
+		}
+
+		y, err := strconv.ParseFloat(values[1], 64)
+		if err == nil {
+			a.Y = y
+		}
+
+		z, err := strconv.ParseFloat(values[2], 64)
+		if err == nil {
+			a.Z = z
+		}
+	}
 }

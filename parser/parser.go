@@ -3,17 +3,67 @@ package parser
 import (
 	"bufio"
 	"fmt"
+	"goRayTracing/render"
+	"goRayTracing/types/camera"
+	"goRayTracing/types/color"
+	"goRayTracing/types/light"
+	"goRayTracing/types/shapes"
 	"os"
-
+	"strings"
 )
 
-func Parser(filename string)([]string, error) {
+var (
+	parsingViewport = map[string]func([]string) camera.Canvas {
+		"Resolution": parseCanvas,
+	}
+
+	parsingCameras = map[string]func([]string) camera.Camera {
+		"camera": parseCamera,
+	}
+
+	parsingObjects = map[string]func([]string) shapes.Object {
+		"sphere": parseSphere,
+	}
+	parsingLights = map[string]func([]string) light.PointLight {
+		"pointLight": parsePointLight,
+	}
+)
+
+func Parser(filename string)(render.Scene, error) {
+	var mainScene render.Scene
+
 	lines, err := ReadFile(filename)
 	if err != nil {
 		fmt.Println("Error: read file!")
+		return mainScene, err
 	}
 
-	return lines, err
+	for _, str := range lines {
+		arrSubStr := strings.Split(str, " ")
+
+		if tmpFunc, ok := parsingViewport[arrSubStr[0]]; ok {
+			mainScene.Viewport = tmpFunc(arrSubStr)
+			continue
+		}
+
+		if tmpFunc, ok := parsingCameras[arrSubStr[0]]; ok {
+			mainScene.Cameras = append(mainScene.Cameras, tmpFunc(arrSubStr))
+			continue
+		}
+
+		if tmpFunc, ok := parsingObjects[arrSubStr[0]]; ok {
+			mainScene.Objects = append(mainScene.Objects, tmpFunc(arrSubStr))
+			continue
+		}
+
+		if tmpFunc, ok := parsingLights[arrSubStr[0]]; ok {
+			mainScene.Lights = append(mainScene.Lights, tmpFunc(arrSubStr))
+			continue
+		}
+	}
+	mainScene.Background = color.Color{}
+
+	return mainScene, err
 }
 
 func ReadFile(filename string)([]string, error) {

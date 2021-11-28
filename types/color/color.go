@@ -1,6 +1,10 @@
 package color
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+	"strings"
+)
 
 type Color struct {
 	R, G, B uint8
@@ -35,4 +39,25 @@ func (x Color) Sum(y Color) Color {
 
 func (x Color) ToInt() int {
 	return int(x.R) << 16 | int(x.G) << 8 | int(x.B)
+}
+
+func (x *Color) ParseColor(input string) {
+	values := strings.Split(input, ",")
+
+	if len(values) == 3 {
+		r, err := strconv.Atoi(values[0])
+		if err == nil {
+			x.R = uint8(r)
+		}
+
+		g, err := strconv.Atoi(values[1])
+		if err == nil {
+			x.G = uint8(g)
+		}
+
+		b, err := strconv.Atoi(values[2])
+		if err == nil {
+			x.B = uint8(b)
+		}
+	}
 }
