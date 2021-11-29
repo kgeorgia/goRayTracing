@@ -6,7 +6,6 @@ import (
 	. "goRayTracing/types/light"
 	. "goRayTracing/types/shapes"
 	"math"
-	"time"
 )
 
 type Pixel struct {
@@ -43,42 +42,45 @@ func (scene Scene) Render(countThreads int) [][]int {
 	}
 	close(cordPixel)
 
-	for {
-		select {
-		case value := <- colorPixel:
-			pixelArray[value.X][value.Y] = value.Value.ToInt()
-		case <-time.After(time.Second * 2):
+	countCycle := int(scene.Viewport.Width * scene.Viewport.Height)
+	for i := 0; i < countCycle; i++ {
+		value, ok := <- colorPixel
+		if !ok {
 			return pixelArray
 		}
+		pixelArray[value.X][value.Y] = value.Value.ToInt()
 	}
+
+	return pixelArray
 }
 
 func (scene Scene) Trace(cord, color chan Pixel) {
-	var closestShape Object
-	minDist := math.MaxFloat64
-	var resultColor Color
-
 	for value := range cord {
+		var closestShape int
+		var isIntersect bool
+		var resultIntense Intense
+		minDist := math.MaxFloat64
+
 		position, direction := scene.Cameras[0].CastRay(value.X, value.Y, scene.Viewport)
-
-		for _, shape := range scene.Objects {
-			currDist := shape.Intersect(position, direction)
-
-			if currDist != -1 && currDist < minDist {
+		for idx, shape := range scene.Objects {
+			currDist, ok := shape.Intersect(position, direction)
+			if ok && currDist < minDist {
+				isIntersect = true
 				minDist = currDist
-				closestShape = shape
+				closestShape = idx
 			}
 		}
 
-		if minDist != math.MaxFloat64 {
+		if isIntersect {
 			surfPoint := direction.Multi(minDist).Sum(position)
 			for _, light := range scene.Lights {
 				shapeNormal, ok := light.IntersectLight(scene.Objects, closestShape, surfPoint)
 				if ok {
-					resultColor.Sum(light.AddLight(closestShape.GetColor(), shapeNormal))
+					tmpIntense := light.AddLight(scene.Objects[closestShape].GetColor(), shapeNormal)
+					resultIntense = resultIntense.Sum(tmpIntense)
 				}
 			}
-			value.Value = resultColor
+			value.Value = resultIntense.ResultColor(scene.Objects[closestShape].GetColor())
 		}
 		color <- value
 	}

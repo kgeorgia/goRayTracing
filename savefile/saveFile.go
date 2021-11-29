@@ -41,8 +41,6 @@ func SaveBMP(arrPixels [][]int) {
 
 	output := append(header, image...)
 
-	fmt.Println(arrPixels)
-
 	if _, err := file.Write(output); err != nil {
 		fmt.Println("flag1")
 	}
@@ -53,8 +51,8 @@ func SaveBMP(arrPixels [][]int) {
 
 func writeColorToByte(arr []byte, idx, number int) {
 	arr[idx] = byte(number)
-	arr[idx] = byte(number >> 8)
-	arr[idx] = byte(number >> 16)
+	arr[idx + 1] = byte(number >> 8)
+	arr[idx + 2] = byte(number >> 16)
 }
 
 func writeIntToByte(arr []byte, idx, number int ) {

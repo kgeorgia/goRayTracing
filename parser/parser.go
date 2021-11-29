@@ -61,7 +61,7 @@ func Parser(filename string)(render.Scene, error) {
 			continue
 		}
 	}
-	mainScene.Background = color.Color{}
+	mainScene.Background = color.Color{R: 20, G: 20, B: 50}
 
 	return mainScene, err
 }

@@ -12,7 +12,7 @@ type Sphere struct {
 	Diameter float64
 }
 
-func (sp Sphere) Intersect(origin, direction Vector) float64 {
+func (sp Sphere) Intersect(origin, direction Vector) (float64, bool) {
 	var a, b, c, x1, x2, disc float64
 	sub := origin.Sub(sp.Position)
 
@@ -22,7 +22,7 @@ func (sp Sphere) Intersect(origin, direction Vector) float64 {
 
 	disc = math.Pow(b, 2) - (4 * a * c)
 	if disc < 0 {
-		return -1
+		return 0.0, false
 	}
 
 	disc = math.Sqrt(disc)
@@ -31,11 +31,11 @@ func (sp Sphere) Intersect(origin, direction Vector) float64 {
 	x2 = (-b + disc) / a
 
 	if x1 >= 0 && x1 < x2 {
-		return x1
+		return x1, true
 	} else if x2 >= 0 && x2 < x1 {
-		return x2
+		return x2, true
 	} else {
-		return -1
+		return 0.0, false
 	}
 }
 
