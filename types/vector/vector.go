@@ -11,6 +11,11 @@ type Vector struct {
 	X, Y, Z float64
 }
 
+type Ray struct {
+	Origin, Direction	Vector
+	Length				float64
+}
+
 func (a Vector) Print() {
 	fmt.Println(a.X, a.Y, a.Z)
 }

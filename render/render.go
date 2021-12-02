@@ -18,7 +18,7 @@ type Scene struct {
 	Viewport	Canvas
 	Cameras		[]Camera
 	Objects		[]Object
-	Lights		[]PointLight
+	Lights		[]Light
 	Background	Color
 }
 
@@ -59,7 +59,6 @@ func (scene Scene) Trace(cord, color chan Pixel) {
 	for value := range cord {
 		var closestShape int
 		var isIntersect bool
-		var resultIntense Intense
 		minDist := math.MaxFloat64
 
 		position, direction := scene.Cameras[0].CastRay(value.X, value.Y, scene.Viewport)
@@ -74,34 +73,22 @@ func (scene Scene) Trace(cord, color chan Pixel) {
 
 		if isIntersect {
 			surfPoint := direction.Multi(minDist).Sum(position)
-			vectSurfNormal := scene.Objects[closestShape].GetNormal(surfPoint)
-			for _, light := range scene.Lights {
-				directLightRay, lengthLightRay := light.CreateLightRay(surfPoint)
-
-				for idx, shape := range scene.Objects {
-					if idx != closestShape {
-						currDist, ok := shape.Intersect(surfPoint, directLightRay)
-						if ok && currDist < lengthLightRay {
-
-						}
-					}
-				}
-				//shapeNormal, ok := light.IntersectLight(scene.Objects, closestShape, surfPoint)
-				//if ok {
-				//	tmpIntense := light.AddLight(scene.Objects[closestShape].GetColor(), shapeNormal)
-				//	resultIntense = resultIntense.Sum(tmpIntense)
-				//}
-			}
-			value.Value = resultIntense.ResultColor(scene.Objects[closestShape].GetColor())
+			value.Value = scene.ApplyLight(closestShape, surfPoint, position)
 		}
 		color <- value
 	}
 }
 
-func (scene Scene) ApplyLight(idxShape int, surfPoint Vector) (Color, bool) {
-	var resultIntense Intense
+func (scene Scene) ApplyLight(idxShape int, surfPoint, origin Vector) Color {
+	var resultColor Color
+	currShape := scene.Objects[idxShape]
 
-	for _, light := range scene.Lights {
+	for idx, light := range scene.Lights {
+
+		if idx == 1 {
+
+		}
+
 		var isIntersect bool
 		direction, length := light.CreateLightRay(surfPoint)
 
@@ -115,17 +102,12 @@ func (scene Scene) ApplyLight(idxShape int, surfPoint Vector) (Color, bool) {
 			}
 		}
 
-		if !isIntersect {
-
+		if isIntersect == false {
+			surfNormal := (currShape.GetNormal(surfPoint, origin)).Dot(direction)
+			tmpIntense := light.AddLight(currShape.GetColor(), surfNormal)
+			resultColor = resultColor.Sum(tmpIntense)
 		}
 	}
+
+	return resultColor
 }
-
-
-
-
-
-
-
-
-

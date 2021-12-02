@@ -23,9 +23,13 @@ var (
 
 	parsingObjects = map[string]func([]string) shapes.Object {
 		"sphere": parseSphere,
+		"plane": parsePlane,
+		"square": parseSquare,
+		"triangle": parseTriangle,
 	}
-	parsingLights = map[string]func([]string) light.PointLight {
+	parsingLights = map[string]func([]string) light.Light {
 		"pointLight": parsePointLight,
+		"Ambient": parseAmbientLight,
 	}
 )
 

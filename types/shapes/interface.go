@@ -7,6 +7,6 @@ import (
 
 type Object interface {
 	Intersect(origin, direction Vector) (float64, bool)
-	GetNormal(surfPoint Vector) Vector
+	GetNormal(surfPoint, origin Vector) Vector
 	GetColor() Color
 }
