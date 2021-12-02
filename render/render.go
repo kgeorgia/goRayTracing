@@ -5,6 +5,7 @@ import (
 	. "goRayTracing/types/color"
 	. "goRayTracing/types/light"
 	. "goRayTracing/types/shapes"
+	. "goRayTracing/types/vector"
 	"math"
 )
 
@@ -73,12 +74,23 @@ func (scene Scene) Trace(cord, color chan Pixel) {
 
 		if isIntersect {
 			surfPoint := direction.Multi(minDist).Sum(position)
+			vectSurfNormal := scene.Objects[closestShape].GetNormal(surfPoint)
 			for _, light := range scene.Lights {
-				shapeNormal, ok := light.IntersectLight(scene.Objects, closestShape, surfPoint)
-				if ok {
-					tmpIntense := light.AddLight(scene.Objects[closestShape].GetColor(), shapeNormal)
-					resultIntense = resultIntense.Sum(tmpIntense)
+				directLightRay, lengthLightRay := light.CreateLightRay(surfPoint)
+
+				for idx, shape := range scene.Objects {
+					if idx != closestShape {
+						currDist, ok := shape.Intersect(surfPoint, directLightRay)
+						if ok && currDist < lengthLightRay {
+
+						}
+					}
 				}
+				//shapeNormal, ok := light.IntersectLight(scene.Objects, closestShape, surfPoint)
+				//if ok {
+				//	tmpIntense := light.AddLight(scene.Objects[closestShape].GetColor(), shapeNormal)
+				//	resultIntense = resultIntense.Sum(tmpIntense)
+				//}
 			}
 			value.Value = resultIntense.ResultColor(scene.Objects[closestShape].GetColor())
 		}
@@ -86,6 +98,28 @@ func (scene Scene) Trace(cord, color chan Pixel) {
 	}
 }
 
+func (scene Scene) ApplyLight(idxShape int, surfPoint Vector) (Color, bool) {
+	var resultIntense Intense
+
+	for _, light := range scene.Lights {
+		var isIntersect bool
+		direction, length := light.CreateLightRay(surfPoint)
+
+		for idx, shape := range scene.Objects {
+			if idx != idxShape {
+				currDist, ok := shape.Intersect(surfPoint, direction)
+				if ok && currDist < length {
+					isIntersect = true
+					break
+				}
+			}
+		}
+
+		if !isIntersect {
+
+		}
+	}
+}
 
 
 

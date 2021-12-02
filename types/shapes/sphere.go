@@ -12,6 +12,12 @@ type Sphere struct {
 	Diameter float64
 }
 
+type Plane struct {
+	Position Vector
+	Rotation Vector
+	Color
+}
+
 func (sp Sphere) Intersect(origin, direction Vector) (float64, bool) {
 	var a, b, c, x1, x2, disc float64
 	sub := origin.Sub(sp.Position)

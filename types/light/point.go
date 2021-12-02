@@ -88,3 +88,18 @@ func (p PointLight) IntersectLight(objects []Object, currShape int, surfPoint Ve
 
 	return shapeNormal.Dot(lightRay), true
 }
+
+func (p PointLight) CreateLightRay(surfPoint Vector) (Vector, float64) {
+	lightRay := p.Position.Sub(surfPoint)
+	lenRay := lightRay.Length()
+
+	return lightRay.Normalize(), lenRay
+}
+
+
+
+
+
+
+
+
