@@ -26,6 +26,7 @@ var (
 		"plane": parsePlane,
 		"square": parseSquare,
 		"triangle": parseTriangle,
+		"cylinder": parseCylinder,
 	}
 	parsingLights = map[string]func([]string) light.Light {
 		"pointLight": parsePointLight,

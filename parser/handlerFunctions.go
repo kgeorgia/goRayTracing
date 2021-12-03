@@ -117,3 +117,23 @@ func parseTriangle(input []string) shapes.Object {
 
 	return result
 }
+
+func parseCylinder(input []string) shapes.Object {
+	var result shapes.Cylinder
+
+	if len(input) == 6 {
+		result.Position.ParseVector(input[1])
+		result.Rotation.ParseVector(input[2])
+		diameter, err := strconv.ParseFloat(input[3], 64)
+		if err == nil {
+			result.Diameter = diameter
+		}
+		height, err := strconv.ParseFloat(input[4], 64)
+		if err == nil {
+			result.Height = height
+		}
+		result.Color.ParseColor(input[5])
+	}
+
+	return result
+}

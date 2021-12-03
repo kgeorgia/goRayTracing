@@ -7,8 +7,9 @@ type AmbientLight struct {
 	Color Color
 }
 
-func (a AmbientLight) AddLight(shapeColor Color, surfNorm float64) Color {
+func (a AmbientLight) AddLight(shapeColor Color, surfNorm, reflect float64) Color {
 	surfNorm = 1
+	reflect = 0
 
 	intenseR := (float64(a.Color.R) / 255) * surfNorm
 	intenseG := (float64(a.Color.G) / 255) * surfNorm

@@ -61,7 +61,8 @@ func (scene Scene) Trace(cord, color chan Pixel) {
 		var isIntersect bool
 		minDist := math.MaxFloat64
 
-		position, direction := scene.Cameras[0].CastRay(value.X, value.Y, scene.Viewport)
+		viewportCord := scene.Viewport.TranslateCordSys(value.X, value.Y)
+		position, direction := scene.Cameras[0].CastRay(viewportCord)
 		for idx, shape := range scene.Objects {
 			currDist, ok := shape.Intersect(position, direction)
 			if ok && currDist < minDist {
@@ -103,8 +104,14 @@ func (scene Scene) ApplyLight(idxShape int, surfPoint, origin Vector) Color {
 		}
 
 		if isIntersect == false {
+			shapeNormal := currShape.GetNormal(surfPoint, origin)
+			reflectRay := shapeNormal.Multi(shapeNormal.Dot(direction))
+			reflectRay = (reflectRay.Multi(2)).Sub(direction)
+
+			reflect := reflectRay.Dot(origin.Sub(surfPoint).Normalize())
+
 			surfNormal := (currShape.GetNormal(surfPoint, origin)).Dot(direction)
-			tmpIntense := light.AddLight(currShape.GetColor(), surfNormal)
+			tmpIntense := light.AddLight(currShape.GetColor(), surfNormal, reflect)
 			resultColor = resultColor.Sum(tmpIntense)
 		}
 	}
