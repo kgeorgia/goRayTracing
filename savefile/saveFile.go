@@ -12,7 +12,7 @@ func SaveBMP(arrPixels [][]int) {
 	heightImage := len(arrPixels[0])
 	image := make([]byte, sizeImage)
 
-	file, err := os.Create("output.bmp")
+	file, err := os.Create("scene.bmp")
 	if err != nil {
 		fmt.Println("Error: could not a create file")
 		return
