@@ -1,6 +1,6 @@
 Ray tracing 
 ===
-##First example
+## First example
 ![Screenshot](textures/scene.bmp)
-##Second example
+## Second example
 ![Screenshot](textures/scene2.bmp)
