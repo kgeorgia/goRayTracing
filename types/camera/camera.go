@@ -1,43 +1,43 @@
 package camera
 
 import (
-	"fmt"
-	. "goRayTracing/types/vector"
-	"math"
+    "fmt"
+    . "goRayTracing/types/vector"
+    "math"
 )
 
 type Canvas struct {
-	Width, Height uint
+    Width, Height uint
 }
 
 type Camera struct {
-	Position		Vector
-	Rotation		Vector
-	Fov				uint8
+    Position		Vector
+    Rotation		Vector
+    Fov				uint8
 }
 
 func (c Camera) Print() {
-	c.Position.Print()
-	c.Rotation.Print()
-	fmt.Println(c.Fov)
+    c.Position.Print()
+    c.Rotation.Print()
+    fmt.Println(c.Fov)
 }
 
 func (c Camera) CastRay(viewportCord Vector) (origin, direction Vector) {
-	upVector := Vector{Y: -1}
-	rightVector := c.Rotation.Normalize().Cross(upVector)
-	upVector = rightVector.Cross(c.Rotation.Normalize())
+    upVector := Vector{Y: -1}
+    rightVector := c.Rotation.Normalize().Cross(upVector)
+    upVector = rightVector.Cross(c.Rotation.Normalize())
 
-	viewportCord.X *= math.Tan((float64(c.Fov) / 2) * math.Pi / 180)
-	viewportCord.Y *= math.Tan((float64(c.Fov) / 2) * math.Pi / 180)
+    viewportCord.X *= math.Tan((float64(c.Fov) / 2) * math.Pi / 180)
+    viewportCord.Y *= math.Tan((float64(c.Fov) / 2) * math.Pi / 180)
 
-	rightVector = rightVector.Multi(viewportCord.X)
-	upVector = upVector.Multi(viewportCord.Y)
-	result := rightVector.Sum(upVector)
-	result = result.Sum(c.Position)
-	result = result.Sum(c.Rotation.Normalize())
-	result = result.Sub(c.Position).Normalize()
+    rightVector = rightVector.Multi(viewportCord.X)
+    upVector = upVector.Multi(viewportCord.Y)
+    result := rightVector.Sum(upVector)
+    result = result.Sum(c.Position)
+    result = result.Sum(c.Rotation.Normalize())
+    result = result.Sub(c.Position).Normalize()
 
-	return c.Position, result
+    return c.Position, result
 }
 
 //func (c Camera) CastRay(x, y uint, canvas Canvas) (origin, direction Vector) {
