@@ -4,7 +4,7 @@ import . "goRayTracing/types/color"
 import . "goRayTracing/types/vector"
 
 type AmbientLight struct {
-    Color Color
+    Color   Color
 }
 
 func (a AmbientLight) AddLight(shapeColor Color, surfNorm, reflect float64) Color {

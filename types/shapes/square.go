@@ -7,9 +7,9 @@ import (
 import . "goRayTracing/types/color"
 
 type Square struct {
-    Position, Rotation	Vector
-    Size 				float64
-    Color				Color
+    Position, Rotation  Vector
+    Size                float64
+    Color               Color
 }
 
 func (s Square) Intersect(origin, direction Vector) (float64, bool) {

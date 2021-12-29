@@ -7,9 +7,9 @@ import (
 )
 
 type Cylinder struct {
-    Position, Rotation	Vector
-    Diameter, Height	float64
-    Color				Color
+    Position, Rotation  Vector
+    Diameter, Height    float64
+    Color               Color
 }
 
 func (cy Cylinder) Intersect(origin, direction Vector) (float64, bool) {

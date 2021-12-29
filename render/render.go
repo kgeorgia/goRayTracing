@@ -10,16 +10,16 @@ import (
 )
 
 type Pixel struct {
-    X, Y	uint
-    Value	Color
+    X, Y    uint
+    Value   Color
 }
 
 type Scene struct {
-    Viewport	Canvas
-    Cameras		[]Camera
-    Objects		[]Object
-    Lights		[]Light
-    Background	Color
+    Viewport    Canvas
+    Cameras     []Camera
+    Objects     []Object
+    Lights      []Light
+    Background  Color
 }
 
 func (scene Scene) Render(countThreads int) [][]int {

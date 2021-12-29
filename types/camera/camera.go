@@ -7,13 +7,13 @@ import (
 )
 
 type Canvas struct {
-    Width, Height uint
+    Width, Height   uint
 }
 
 type Camera struct {
-    Position		Vector
-    Rotation		Vector
-    Fov				uint8
+    Position        Vector
+    Rotation        Vector
+    Fov             uint8
 }
 
 func (c Camera) Print() {

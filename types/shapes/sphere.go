@@ -7,9 +7,9 @@ import (
 )
 
 type Sphere struct {
-    Position Vector
-    Color    Color
-    Diameter float64
+    Position    Vector
+    Color       Color
+    Diameter    float64
 }
 
 func (sp Sphere) Intersect(origin, direction Vector) (float64, bool) {

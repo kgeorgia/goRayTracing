@@ -4,8 +4,8 @@ import . "goRayTracing/types/vector"
 import . "goRayTracing/types/color"
 
 type Plane struct {
-    Position, Rotation	Vector
-    Color				Color
+    Position, Rotation  Vector
+    Color               Color
 }
 
 func (p Plane) Intersect(origin, direction Vector) (float64, bool) {

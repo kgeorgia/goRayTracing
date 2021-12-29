@@ -7,8 +7,8 @@ import (
 )
 
 type PointLight struct {
-    Position	Vector
-    Color
+    Position    Vector
+    Color       Color
 }
 
 func (p PointLight) AddLight(shapeColor Color, surfNorm, reflect float64) Color {

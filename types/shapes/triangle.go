@@ -7,8 +7,8 @@ import (
 import . "goRayTracing/types/color"
 
 type Triangle struct {
-    A, B, C	Vector
-    Color	Color
+    A, B, C Vector
+    Color   Color
 }
 
 func (t Triangle) Intersect(origin, direction Vector) (float64, bool) {
