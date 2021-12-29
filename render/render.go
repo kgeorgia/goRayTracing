@@ -1,11 +1,11 @@
 package render
 
 import (
-	. "goRayTracing/types/camera"
-	. "goRayTracing/types/color"
-	. "goRayTracing/types/light"
-	. "goRayTracing/types/shapes"
-	. "goRayTracing/types/vector"
+	. "github.com/kgeorgia/goRayTracing/types/camera"
+	. "github.com/kgeorgia/goRayTracing/types/color"
+	. "github.com/kgeorgia/goRayTracing/types/light"
+	. "github.com/kgeorgia/goRayTracing/types/shapes"
+	. "github.com/kgeorgia/goRayTracing/types/vector"
 	"math"
 )
 
