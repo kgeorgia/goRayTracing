@@ -55,6 +55,7 @@ func (scene Scene) Render(countThreads int) [][]int {
     return pixelArray
 }
 
+
 func (scene Scene) Trace(cord, color chan Pixel) {
     for value := range cord {
         var closestShape int
